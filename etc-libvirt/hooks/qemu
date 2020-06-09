@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$2" == "prepare" ]; then 
+	vfio-isolate cpuset-create --cpus C0-5,12-17 /host.slice 
+	vfio-isolate cpuset-create --cpus C0-23 -nlb /machine.slice
+	vfio-isolate move-tasks / /host.slice
+fi
+
+if [ "$2" == "release" ]; then
+	vfio-isolate cpuset-delete /host.slice
+	vfio-isolate cpuset-delete /machine.slice	
+fi
