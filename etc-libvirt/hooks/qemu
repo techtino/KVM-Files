@@ -1,12 +1,14 @@
 #!/bin/bash
 
-if [ "$2" == "prepare" ]; then 
-	vfio-isolate cpuset-create --cpus C0-5,12-17 /host.slice 
-	vfio-isolate cpuset-create --cpus C0-23 -nlb /machine.slice
-	vfio-isolate move-tasks / /host.slice
+if [ "$2" == "prepare" ] && [ "$1" == "windows11" ]; then 
+        vfio-isolate cpuset-create --cpus C0-5,12-17 /host.slice 
+        vfio-isolate cpuset-create --cpus C0-23 -nlb /machine.slice
+        vfio-isolate move-tasks / /host.slice
+        swaymsg-root output DVI-D-1 disable
 fi
 
-if [ "$2" == "release" ]; then
-	vfio-isolate cpuset-delete /host.slice
-	vfio-isolate cpuset-delete /machine.slice	
+if [ "$2" == "release" ] && [ "$1" == "windows11" ]; then
+        vfio-isolate cpuset-delete /host.slice
+        vfio-isolate cpuset-delete /machine.slice
+        swaymsg-root output DVI-D-1 enable
 fi
